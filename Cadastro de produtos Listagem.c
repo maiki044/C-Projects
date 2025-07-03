@@ -14,7 +14,7 @@ void cadastrarProduto(){
     FILE*produtos = fopen("produtos.dat","ab");
     if(produtos == NULL){
         printf("Erro ao abrir arquivo");
-        return 1;
+        return ;
     }
 
     printf("Me informe o codigo do produto:");
@@ -34,7 +34,56 @@ void cadastrarProduto(){
     fclose(produtos);
 }
 
+void listarProdutos(){
+
+    struct Produto p;
+    FILE*produtos = fopen("produtos.dat","rb");
+
+    if(produtos == NULL){
+        printf("Erro ao abrir arquivo");
+        return ;
+    }
+
+    printf("\n========Lista de Produtos Cadastrados========\n");
+
+    while (fread(&p,sizeof(struct Produto),1,produtos)== 1){
+        printf("Codigo: %d\n",p.codigo);
+        printf("nome: %s\n",p.nome);
+        printf("preco: %.2f\n",p.preco);
+        printf("quantidade: %d\n",p.quantidade);
+
+    }
+
+    fclose(produtos);
+
+}
+
 int main(){
-    cadastrarProduto();
+
+    int opcao;
+
+    do{
+        printf("\nMenu de opcoes:");
+        printf("1 - Cadastrar produtos\n");
+        printf("2 - listar produtos\n");
+        printf("3 - Sair\n");
+        printf("Escolha uma opcao:");
+        scanf("%d",&opcao);
+        getchar();
+    switch(opcao){
+    case 1 :
+        cadastrarProduto();
+        break;
+    case 2:
+        listarProdutos();
+        break;
+    case 3 :
+        printf("Saindo...");
+        break;
+    default:
+        printf("opcao invalida");
+    }
+    }while(opcao != 3);
+
     return 0;
 }
